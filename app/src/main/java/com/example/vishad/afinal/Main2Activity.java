@@ -15,12 +15,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Main2Activity extends AppCompatActivity {
 
+    TextView tday;
+    TextView yday;
+    TextView thisweekday;
+    TextView lastweekday;
     String number;
     String s="";
     String [] num;
@@ -28,13 +34,24 @@ public class Main2Activity extends AppCompatActivity {
     SharedPreferences prefs;
     ArrayAdapter arrayAdapter;
     TextView textView;
+    int value;
     private static final String TAG = Main2Activity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE,-1);
+        DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy", Locale.getDefault());
+        String yesterdayAsString = dateFormat.format(cal.getTime());
+        Log.v(TAG,"Value of yesterday date from onCreate is : "+yesterdayAsString);
 
-       // textView = (TextView) findViewById(R.id.unit);
+        tday = (TextView) findViewById(R.id.tday);
+        yday = (TextView) findViewById(R.id.yday);
+        thisweekday = (TextView) findViewById(R.id.thisweekday);
+        lastweekday = (TextView) findViewById(R.id.lastweekday);
+        // textView = (TextView) findViewById(R.id.unit);
 
         handleUserInteraction();
 
@@ -58,6 +75,7 @@ public class Main2Activity extends AppCompatActivity {
     public void refreshSmsInbox() {
         int rows = 0;
         double sum = 0;
+        double sumyesterday = 0;
         ContentResolver contentResolver = getContentResolver();
         Cursor smsInboxcursor = contentResolver.query(Uri.parse("content://sms/inbox"), null, null, null, null);
         int indexBody = smsInboxcursor.getColumnIndex("body");
@@ -71,9 +89,6 @@ public class Main2Activity extends AppCompatActivity {
         do{
             String number = smsInboxcursor.getString(indexAddress);
             if (number.equals(i)) {
-
-                Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
-
 
                 int dateIndex = smsInboxcursor.getColumnIndex("date");
                 Log.v("dateIndex", "" + dateIndex);
@@ -105,26 +120,68 @@ public class Main2Activity extends AppCompatActivity {
                 String strDate = "Current Date : " + mdformat.format(calendar.getTime());
 
                 Log.v(TAG,"Current: "+strDate);
+
+                Date c = Calendar.getInstance().getTime();
+                SimpleDateFormat df = new SimpleDateFormat("ddMMMyyyy");
+                String formattedDate = df.format(c);
+                Log.v("c",""+formattedDate);
+
+                calendar.add(Calendar.DATE , -1 );
+                String z = mdformat.format(calendar.getTime());
+                //  int k = Integer.parseInt(formattedDate);
+                //int q= k-1;
+                //String z= String.valueOf(k);
+                Log.v("last",""+z);
+
                 String[] s = strDate.split(" ");
                 Log.v("s1",""+s[0]);
                 Log.v("s2",""+s[1]);
 
-                Double finel;
-                String def = "07Feb2018";
+               // Log.v("ds",""+formattedDate);
+               String def = "07Feb2018";
+                if(datecomplete.equals(formattedDate)) {
 
-                if(datecomplete.equals(def)) {
                     String[] value = smsInboxcursor.getString(indexBody).split(": ");
                     Log.v("value",""+value[1]);
                     sum += Double.parseDouble(value[1]);
 
-
                 }
+
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE,-1);
+                DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy", Locale.getDefault());
+                String yesterdayAsString = dateFormat.format(cal.getTime());
+                Log.v("dq",""+yesterdayAsString);
+
+                if(datecomplete.equals(yesterdayAsString)){
+                    String[] value = smsInboxcursor.getString(indexBody).split(": ");
+                    Log.v("yesterday",""+value[1]);
+                    sumyesterday +=Double.parseDouble(value[1]);
+                }
+                   /* if(Integer.parseInt(formattedDate) - Integer.parseInt(datecomplete)   == 1 ){
+                        String[] value = smsInboxcursor.getString(indexBody).split(": ");
+                        Log.v("yesterday",""+value[1]);
+                        sumyesterday +=Double.parseDouble(value[1]);
+                    }*/
+
+                /*  if(datecomplete.equals(z)){
+
+                       String[] value = smsInboxcursor.getString(indexBody).split(": ");
+                       Log.v("yesterday",""+value[1]);
+                       sumyesterday +=Double.parseDouble(value[1]);
+                   }*/
             }
             String sum1 = String.valueOf(sum);
-
             String ans = String.format("%.2f", sum);
             Log.v(TAG, sum1);
-            //textView.setText(ans);
+            tday.setText(ans);
+
+            String sumyester = String.valueOf(sumyesterday);
+            Log.v("yes",""+sumyester);
+            String an = String.format("%.2f",sumyesterday);
+            yday.setText(an);
+
+
         }
         while (smsInboxcursor.moveToNext() );
 
@@ -133,4 +190,9 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
+    private Date yesterday() {
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        return cal.getTime();
+    }
 }

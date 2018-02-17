@@ -22,6 +22,7 @@
         android:orientation="horizontal"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="50dp"
+
         >
         <TextView
             android:id="@+id/today"
@@ -33,6 +34,7 @@
             android:textStyle="bold" />
 
       <TextView
+          android:id="@+id/tday"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="20"
@@ -62,6 +64,7 @@
             android:textSize="18sp"/>
 
         <TextView
+            android:id="@+id/yday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="20"
@@ -92,6 +95,7 @@
             android:textSize="18sp"/>
 
         <TextView
+            android:id="@+id/thisweekday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="20"
@@ -121,6 +125,7 @@
             android:textSize="18sp"/>
 
         <TextView
+            android:id="@+id/lastweekday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="20"
