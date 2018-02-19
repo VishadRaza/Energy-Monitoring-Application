@@ -89,7 +89,7 @@
             android:id="@+id/thisweek"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thisweek"
+            android:text="This week"
             android:layout_margin="30dp"
             android:textStyle="bold"
             android:textSize="18sp"/>
@@ -119,7 +119,7 @@
             android:id="@+id/lastweek"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lastweek"
+            android:text="Last week"
             android:layout_margin="30dp"
             android:textStyle="bold"
             android:textSize="18sp"/>
