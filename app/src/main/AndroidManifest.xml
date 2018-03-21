@@ -25,6 +25,22 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_first_time"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Todaysms"
+            android:label="@string/title_activity_todaysms"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Yesterdaysms"
+            android:label="@string/title_activity_yesterdaysms"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Thisweeksms"
+            android:label="@string/title_activity_thisweeksms"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Lastweeksms"
+            android:label="@string/title_activity_lastweeksms"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

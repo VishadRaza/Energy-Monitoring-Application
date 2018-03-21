@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Energy Monitoring</string>
     <string name="title_activity_first_time">firstTime</string>
+    <string name="title_activity_todaysms">Todaysms</string>
+    <string name="title_activity_yesterdaysms">Yesterdaysms</string>
+    <string name="title_activity_thisweeksms">Thisweeksms</string>
+    <string name="title_activity_lastweeksms">Lastweeksms</string>
 </resources>

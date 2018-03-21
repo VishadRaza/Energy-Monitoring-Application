@@ -1,6 +1,8 @@
 package com.example.vishad.afinal;
 
+import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -108,65 +110,65 @@ public class Main2Activity extends AppCompatActivity {
 
         calenda.add(Calendar.DATE,-3);
         Date dat3 = calenda.getTime();
-        String[] yesterdayDate3 = dat2.toString().split(" ");
+        String[] yesterdayDate3 = dat3.toString().split(" ");
         YesterdayDate3= yesterdayDate3[2]+yesterdayDate3[1];
 
 
         calenda.add(Calendar.DATE,-4);
         Date dat4 = calenda.getTime();
-        String[] yesterdayDate4 = dat2.toString().split(" ");
+        String[] yesterdayDate4 = dat4.toString().split(" ");
         YesterdayDate4= yesterdayDate4[2]+yesterdayDate4[1];
 
         calenda.add(Calendar.DATE,-5);
         Date dat5 = calenda.getTime();
-        String[] yesterdayDate5 = dat2.toString().split(" ");
+        String[] yesterdayDate5 = dat5.toString().split(" ");
         YesterdayDate5= yesterdayDate5[2]+yesterdayDate5[1];
 
         calenda.add(Calendar.DATE,-6);
         Date dat6 = calenda.getTime();
-        String[] yesterdayDate6 = dat2.toString().split(" ");
+        String[] yesterdayDate6 = dat6.toString().split(" ");
         YesterdayDate6= yesterdayDate6[2]+yesterdayDate6[1];
 
         calenda.add(Calendar.DATE,-7);
         Date dat7 = calenda.getTime();
-        String[] yesterdayDate7 = dat2.toString().split(" ");
+        String[] yesterdayDate7 = dat7.toString().split(" ");
         YesterdayDate7= yesterdayDate7[2]+yesterdayDate7[1];
 
 
         //lastweek
         calenda.add(Calendar.DATE,-8);
         Date dat8 = calenda.getTime();
-        String[] yesterdayDate8 = dat2.toString().split(" ");
+        String[] yesterdayDate8 = dat8.toString().split(" ");
         YesterdayDate8= yesterdayDate8[2]+yesterdayDate8[1];
 
         calenda.add(Calendar.DATE,-9);
         Date dat9 = calenda.getTime();
-        String[] yesterdayDate9 = dat2.toString().split(" ");
+        String[] yesterdayDate9 = dat9.toString().split(" ");
         YesterdayDate9= yesterdayDate9[2]+yesterdayDate9[1];
 
         calenda.add(Calendar.DATE,-10);
         Date dat10 = calenda.getTime();
-        String[] yesterdayDate10 = dat2.toString().split(" ");
+        String[] yesterdayDate10 = dat10.toString().split(" ");
         YesterdayDate10= yesterdayDate10[2]+yesterdayDate10[1];
 
         calenda.add(Calendar.DATE,-11);
         Date dat11 = calenda.getTime();
-        String[] yesterdayDate11 = dat2.toString().split(" ");
+        String[] yesterdayDate11 = dat11.toString().split(" ");
         YesterdayDate11= yesterdayDate11[2]+yesterdayDate11[1];
 
         calenda.add(Calendar.DATE,-12);
         Date dat12 = calenda.getTime();
-        String[] yesterdayDate12 = dat2.toString().split(" ");
+        String[] yesterdayDate12 = dat12.toString().split(" ");
         YesterdayDate12= yesterdayDate12[2]+yesterdayDate12[1];
 
         calenda.add(Calendar.DATE,-13);
         Date dat13 = calenda.getTime();
-        String[] yesterdayDate13 = dat2.toString().split(" ");
+        String[] yesterdayDate13 = dat13.toString().split(" ");
         YesterdayDate13= yesterdayDate13[2]+yesterdayDate13[1];
 
         calenda.add(Calendar.DATE,-14);
         Date dat14 = calenda.getTime();
-        String[] yesterdayDate14 = dat2.toString().split(" ");
+        String[] yesterdayDate14 = dat14.toString().split(" ");
         YesterdayDate14= yesterdayDate14[2]+yesterdayDate14[1];
 
         if (indexBody < 0 || !smsInboxcursor.moveToFirst())
@@ -309,5 +311,26 @@ public class Main2Activity extends AppCompatActivity {
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
         return cal.getTime();
+    }
+
+
+    public void Today(View view) {
+        Intent intent = new Intent(Main2Activity.this,Todaysms.class);
+        startActivity(intent);
+    }
+
+    public void Yesterday(View view) {
+        Intent intent = new Intent(Main2Activity.this,Yesterdaysms.class);
+        startActivity(intent);
+    }
+
+    public void Thisweeksms(View view) {
+        Intent intent = new Intent(Main2Activity.this,Thisweeksms.class);
+        startActivity(intent);
+    }
+
+    public void Lastweeksms(View view) {
+        Intent intent = new Intent(Main2Activity.this,Lastweeksms.class);
+        startActivity(intent);
     }
 }
