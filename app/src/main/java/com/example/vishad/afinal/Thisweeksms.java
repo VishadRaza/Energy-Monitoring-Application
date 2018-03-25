@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,10 +38,13 @@ public class Thisweeksms extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thisweeksms);
+        ListView listView = (ListView) findViewById(R.id.list);
+
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         s = prefs.getString("number", null);
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
+        listView .setAdapter(arrayAdapter);
         Log.v("savedNumber", " " + s);
 
         number = getIntent().getStringExtra("MyNumber");
@@ -152,9 +156,7 @@ public class Thisweeksms extends AppCompatActivity {
                 Log.v("s2", "" + s[1]);
 
                 if ((datecomplete.equals(formattedDate)) || (da.equals(yesterdayDate)) || (da.equals(YesterdayDate2)) || (da.equals(YesterdayDate3)) || (da.equals(YesterdayDate4)) || (da.equals(YesterdayDate5)) || (da.equals(YesterdayDate6))) {
-                    String[] value = smsInboxcursor.getString(indexBody).split(": ");
-                    Log.v("value",""+value[1]);
-                    sum += Double.parseDouble(value[1]);
+
                     String str = "SMS From: " + smsInboxcursor.getString(indexAddress) +
                             "\n" + smsInboxcursor.getString(indexBody) + "\n" + "date: " +da +"\n"+"Time: "+datte[3]+"\n" ;
 
