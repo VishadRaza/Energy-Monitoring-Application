@@ -14,14 +14,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class Thisweeksms extends AppCompatActivity {
 
 
+    private static final String TAG = Todaysms.class.getSimpleName();
     String s="";
     String [] num;
     String number;
@@ -34,11 +37,15 @@ public class Thisweeksms extends AppCompatActivity {
     String YesterdayDate4;
     String YesterdayDate5;
     String YesterdayDate6;
+    ListView listView;
+    Double energyValueOfLastSms;
+    String[] smsValues = new String[100];
+    ArrayList<String> arrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thisweeksms);
-        ListView listView = (ListView) findViewById(R.id.list);
+        listView = (ListView) findViewById(R.id.list);
 
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -56,6 +63,7 @@ public class Thisweeksms extends AppCompatActivity {
 
         // Log.v( "friday" ,"" +number);
         refreshSmsInbox();
+        updateList();
     }
 
 
@@ -157,8 +165,7 @@ public class Thisweeksms extends AppCompatActivity {
 
                 if ((datecomplete.equals(formattedDate)) || (da.equals(yesterdayDate)) || (da.equals(YesterdayDate2)) || (da.equals(YesterdayDate3)) || (da.equals(YesterdayDate4)) || (da.equals(YesterdayDate5)) || (da.equals(YesterdayDate6))) {
 
-                    String str = "SMS From: " + smsInboxcursor.getString(indexAddress) +
-                            "\n" + smsInboxcursor.getString(indexBody) + "\n" + "date: " +da +"\n"+"Time: "+datte[3]+"\n" ;
+                    String str = smsInboxcursor.getString(indexBody) + "\n" + "date: " +datte[0]+ ", " +datecomplete +"\n"+"Time: "+datte[3]+"\n" ;
 
                     arrayAdapter.add(str);
                 }
@@ -167,5 +174,51 @@ public class Thisweeksms extends AppCompatActivity {
 
         }
         while (smsInboxcursor.moveToNext());
+    }
+    private void updateList() {
+
+        int listSize = listView.getCount();
+
+        if (arrayAdapter.getCount() == 0) {
+            Toast.makeText(Thisweeksms.this, "No sms of last week ", Toast.LENGTH_LONG).show();
+        } else {
+            String smsAtLastIndex = (String) arrayAdapter.getItem(listSize - 1);
+            Log.v(TAG, "SMS at last index is " + smsAtLastIndex);
+
+            String[] sms = smsAtLastIndex.split(": ");
+
+            String[] splitSMS = sms[1].split("date");
+
+            energyValueOfLastSms = Double.parseDouble(splitSMS[0]);
+            Log.v(TAG, "Energy value of last sms is " + energyValueOfLastSms);
+
+            for (int j = listSize - 2; j >= 0; j--) {
+                String smsAtIndex = (String) arrayAdapter.getItem(j);
+                Log.v(TAG, "SMS at j index is " + smsAtIndex);
+
+                String[] smsSplit = smsAtIndex.split(": ");
+
+                String[] energyValueStringSplit = smsSplit[1].split("date");
+
+                Double energyValueOfSms = Double.parseDouble(energyValueStringSplit[0]);
+                Log.v(TAG, "Value of energy is " + energyValueOfSms);
+
+                Double unitConsumed = energyValueOfSms - energyValueOfLastSms;
+                String unitconsumedroundoff = String.format("%.2f", unitConsumed);
+
+                String completeSMS = smsAtIndex.concat("Units Consumed: " + unitconsumedroundoff);
+                Log.v(TAG, "Complete sms is " + completeSMS);
+                //  arrayAdapter.clear();
+                arrayAdapter.remove(smsAtIndex);
+                arrayAdapter.insert(completeSMS, j);
+//                    arrayAdapter.add(completeSMS);
+
+                arrayAdapter.notifyDataSetChanged();
+
+                Log.v(TAG, "Units consumed roundoff " + unitconsumedroundoff);
+                energyValueOfLastSms = energyValueOfSms;
+
+            }
+        }
     }
 }

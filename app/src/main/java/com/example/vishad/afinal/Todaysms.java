@@ -1,5 +1,6 @@
 package com.example.vishad.afinal;
 
+import android.app.Application;
 import android.content.ContentResolver;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -14,29 +15,45 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class Todaysms extends AppCompatActivity {
 
+
+    private static final String TAG = Todaysms.class.getSimpleName();
     String number;
     SharedPreferences prefs;
     ArrayAdapter arrayAdapter;
     String s;
     String[] datte;
+    String  yesterdayDate;
+    ListView listView;
+    Double energyValueOfLastSms;
+    String[] smsValues = new String[100];
+    ArrayList<String> arrayList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todaysms);
-        ListView listView = (ListView) findViewById(R.id.list);
+       listView = (ListView) findViewById(R.id.listview);
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         s = prefs.getString("number", null);
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
+
+       // arrayList=new ArrayList<>(Arrays.asList(smsValues));
+
+        //arrayAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,arrayList);
+
+       arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
         listView .setAdapter(arrayAdapter);
         Log.v("savedNumber", " " + s);
 
@@ -49,13 +66,12 @@ public class Todaysms extends AppCompatActivity {
 
         Log.v("friday", "" + number);
         refreshSmsInbox();
+        updateList();
 
     }
 
     public void refreshSmsInbox() {
-        int rows = 0;
-        double sum = 0;
-        double sumyesterday = 0;
+
         ContentResolver contentResolver = getContentResolver();
         Cursor smsInboxcursor = contentResolver.query(Uri.parse("content://sms/inbox"), null, null, null, null);
         int indexBody = smsInboxcursor.getColumnIndex("body");
@@ -66,6 +82,10 @@ public class Todaysms extends AppCompatActivity {
         Calendar calenda = Calendar.getInstance();
         calenda.add(Calendar.DATE, -1);
         Date dat = calenda.getTime();
+        String[] yesterdayDateParts = dat.toString().split(" ");
+        yesterdayDate = yesterdayDateParts[2]+yesterdayDateParts[1];
+
+
 
         if (indexBody < 0 || !smsInboxcursor.moveToFirst())
             return;
@@ -91,6 +111,7 @@ public class Todaysms extends AppCompatActivity {
                 Log.v("Month", "" + datte[1]);
                 Log.v("Date", "" + datte[2]);
                 Log.v("Time", "" + datte[3]);
+                Log.v("Year",""+datte[4]);
 
                 String da = datte[2].concat(datte[1]);
                 String datecomplete = da.concat(datte[5]);
@@ -107,7 +128,8 @@ public class Todaysms extends AppCompatActivity {
                 Date c = Calendar.getInstance().getTime();
                 SimpleDateFormat df = new SimpleDateFormat("ddMMMyyyy");
                 String formattedDate = df.format(c);
-                Log.v("c", "" + formattedDate);
+                //Log.v("c", "" + formattedDate);
+
 
                 calendar.add(Calendar.DATE , -1 );
                 String z = mdformat.format(calendar.getTime());
@@ -117,22 +139,89 @@ public class Todaysms extends AppCompatActivity {
                 Log.v("s1",""+s[0]);
                 Log.v("s2",""+s[1]);
 
+                String [] qwe = datte[3].split(":");
+
+                String a = qwe[0].concat(":").concat(qwe[1]);
+            //  Log.v("tap", " "+a);
+               // Log.v(TAG,"Value of a is "+a);
+//int count[] = new int[0];
+                int k=0;
+
                 if(datecomplete.equals(formattedDate)) {
 
-                    String[] value = smsInboxcursor.getString(indexBody).split(": ");
-                    Log.v("value",""+value[1]);
-                    sum += Double.parseDouble(value[1]);
-                    String str = "SMS From: " + smsInboxcursor.getString(indexAddress) +
-                            "\n" + smsInboxcursor.getString(indexBody) + "\n" + "date: " +da +"\n"+"Time: "+datte[3]+"\n" ;
 
+                    String str = smsInboxcursor.getString(indexBody) + "\n" + "date: " + datte[0] + ", " + datecomplete + "\n" + "Time: " + datte[3] +  "\n";
+
+                    //smsValues[k] = str;
                     arrayAdapter.add(str);
-                }
+                  // k++;
+                    }
+
+
+
+
+
+                int adapterCount = arrayAdapter.getCount();
+                int sizeOfList =  listView.getLastVisiblePosition();
+                int scrollBarSize = listView.getScrollBarSize();
+
+
+
 
             }
 
-
         }
         while (smsInboxcursor.moveToNext()) ;
+
+    }
+
+    private void updateList()
+    {
+
+        int listSize = listView.getCount();
+
+        if(arrayAdapter.getCount()  == 0){
+            Toast.makeText(Todaysms.this, "No sms of last week ",Toast.LENGTH_LONG).show();
+        }
+        else {
+            String smsAtLastIndex = (String) arrayAdapter.getItem(listSize - 1);
+            Log.v(TAG, "SMS at last index is " + smsAtLastIndex);
+
+            String[] sms = smsAtLastIndex.split(": ");
+
+            String[] splitSMS = sms[1].split("date");
+
+            energyValueOfLastSms = Double.parseDouble(splitSMS[0]);
+            Log.v(TAG, "Energy value of last sms is " + energyValueOfLastSms);
+
+            for (int j = listSize - 2; j >= 0; j--) {
+                String smsAtIndex = (String) arrayAdapter.getItem(j);
+                Log.v(TAG, "SMS at j index is " + smsAtIndex);
+
+                String[] smsSplit = smsAtIndex.split(": ");
+
+                String[] energyValueStringSplit = smsSplit[1].split("date");
+
+                Double energyValueOfSms = Double.parseDouble(energyValueStringSplit[0]);
+                Log.v(TAG, "Value of energy is " + energyValueOfSms);
+
+                Double unitConsumed = energyValueOfSms - energyValueOfLastSms;
+                String unitconsumedroundoff = String.format("%.2f", unitConsumed);
+
+                String completeSMS = smsAtIndex.concat("Units Consumed: " + unitconsumedroundoff);
+                Log.v(TAG, "Complete sms is " + completeSMS);
+                //  arrayAdapter.clear();
+                arrayAdapter.remove(smsAtIndex);
+                arrayAdapter.insert(completeSMS, j);
+//                    arrayAdapter.add(completeSMS);
+
+                arrayAdapter.notifyDataSetChanged();
+
+                Log.v(TAG, "Units consumed roundoff " + unitconsumedroundoff);
+                energyValueOfLastSms = energyValueOfSms;
+
+            }
+        }
 
     }
 }

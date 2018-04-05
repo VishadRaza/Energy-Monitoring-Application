@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#f7f1f1"
     tools:context="com.example.vishad.afinal.Main2Activity">
 
 <LinearLayout
@@ -16,6 +17,8 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/card1"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="5dp"
         android:layout_width="match_parent"
         android:layout_height="105sp"
         android:layout_margin="10dp"
@@ -56,6 +59,8 @@
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="50dp"
         android:onClick="Yesterday"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="5dp"
         >
         <TextView
             android:id="@+id/yesterday"
@@ -88,6 +93,8 @@
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="50dp"
         android:onClick="Thisweeksms"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="5dp"
         >
         <TextView
             android:id="@+id/thisweek"
@@ -119,6 +126,8 @@
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="50dp"
         android:onClick="Lastweeksms"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="5dp"
         >
         <TextView
             android:id="@+id/lastweek"

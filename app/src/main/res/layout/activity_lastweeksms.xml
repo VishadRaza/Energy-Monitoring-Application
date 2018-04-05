@@ -6,5 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.example.vishad.afinal.Lastweeksms">
 
-
+<ListView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/list"></ListView>
 </android.support.design.widget.CoordinatorLayout>

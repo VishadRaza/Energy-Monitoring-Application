@@ -41,7 +41,8 @@
         <activity
             android:name=".Lastweeksms"
             android:label="@string/title_activity_lastweeksms"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".SplashScreenActivity"></activity>
     </application>
 
 </manifest>

@@ -5,4 +5,6 @@
     <string name="title_activity_yesterdaysms">Yesterdaysms</string>
     <string name="title_activity_thisweeksms">Thisweeksms</string>
     <string name="title_activity_lastweeksms">Lastweeksms</string>
+
+    <string name="title">Electricity Monitoring</string>
 </resources>
